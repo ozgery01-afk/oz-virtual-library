@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Registered student account details and academic affiliation",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Auth UID or permanent ID" },
+        "fullName": { "type": "string", "description": "Student full legal name" },
+        "studentId": { "type": "string", "description": "9-digit student credential number" },
+        "email": { "type": "string", "description": "Student email address" },
+        "course": { "type": "string", "description": "Enrolled degree course" },
+        "faculty": { "type": "string", "description": "University faculty or department" },
+        "branch": { "type": "string", "description": "Course specialization or branch" },
+        "university": { "type": "string", "description": "Academic institution name" },
+        "academicYear": { "type": "string", "description": "Current year level of study" },
+        "photoUrl": { "type": "string", "description": "Student portrait photo base64 or URL" },
+        "status": { "type": "string", "enum": ["ativo", "bloqueado", "pendente"] },
+        "isAdmin": { "type": "boolean", "description": "Whether the user holds administrative role" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["fullName", "studentId", "email"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Library book or academic material entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Book identifier" },
+        "title": { "type": "string", "description": "Title of the material" },
+        "author": { "type": "string", "description": "Author or publisher" },
+        "category": { "type": "string", "description": "Curriculum category or area" },
+        "subject": { "type": "string", "description": "Associated academic subject" },
+        "year": { "type": "number", "description": "Year of study or publication" },
+        "coverUrl": { "type": "string", "description": "URL to cover image" },
+        "pdfUrl": { "type": "string", "description": "URL to document file" },
+        "materialType": { "type": "string", "description": "Type of material (Livros, Resumos, etc)" }
+      },
+      "required": ["title", "category"]
+    },
+    "UserLibrary": {
+      "title": "UserLibrary",
+      "description": "Student reading shelf containing favorites, queue, and completed books",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Student user UID" },
+        "favorites": { "type": "string", "description": "Array of favorite book IDs" },
+        "toRead": { "type": "string", "description": "Array of queue book IDs" },
+        "finished": { "type": "string", "description": "Array of finished book IDs" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["userId"]
+    },
+    "Matricula": {
+      "title": "Matricula",
+      "description": "Fast lookup record matching 9-digit student IDs and emails to UIDs",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "description": "9-digit student ID" },
+        "email": { "type": "string", "description": "Student email" },
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "status": { "type": "string", "description": "Student status" }
+      },
+      "required": ["email"]
+    },
+    "Cadeira": {
+      "title": "Cadeira",
+      "description": "Curriculum chair or academic discipline defined or customized by administrator",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Normalized identifier of the cadeira" },
+        "name": { "type": "string", "description": "Official name of the academic subject" },
+        "category": { "type": "string", "description": "Curriculum division" },
+        "description": { "type": "string", "description": "Discipline overview or description" },
+        "year": { "type": "string", "description": "Academic year level" },
+        "semester": { "type": "string", "description": "Academic semester" },
+        "course": { "type": "string", "description": "Course or degree program" },
+        "coverUrl": { "type": "string", "description": "Custom cover image URL" },
+        "deleted": { "type": "boolean", "description": "Whether the discipline is deleted" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of update" }
+      },
+      "required": ["name", "category"]
+    },
+    "CadeiraCover": {
+      "title": "CadeiraCover",
+      "description": "Standardized cover document for academic discipline",
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string", "description": "Discipline name" },
+        "coverUrl": { "type": "string", "description": "Cover image URL" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of update" }
+      },
+      "required": ["subject", "coverUrl"]
+    },
+    "AppConfig": {
+      "title": "AppConfig",
+      "description": "Global application configuration including curriculum deleted chairs and design settings",
+      "type": "object",
+      "properties": {
+        "deletedSubjects": { "type": "array", "description": "List of deleted curriculum chairs" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of update" }
+      }
+    },
+    "StudyRoom": {
+      "title": "StudyRoom",
+      "description": "Collaborative virtual study room for co-reading and academic discussions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Room identifier" },
+        "code": { "type": "string", "description": "Secret access code required to join" },
+        "name": { "type": "string", "description": "Study room title" },
+        "subject": { "type": "string", "description": "Subject or academic topic" },
+        "hostUid": { "type": "string", "description": "Host student UID" },
+        "hostName": { "type": "string", "description": "Host student name" },
+        "bookId": { "type": "string", "description": "Selected manual identifier" },
+        "bookTitle": { "type": "string", "description": "Selected manual title" },
+        "bookCoverUrl": { "type": "string", "description": "Selected manual cover image" },
+        "bookPdfUrl": { "type": "string", "description": "Selected manual PDF URL" },
+        "currentPage": { "type": "number", "description": "Synchronized page number" },
+        "status": { "type": "string", "enum": ["active", "closed"] },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" }
+      },
+      "required": ["code", "name", "hostUid"]
+    }
+  },
+  "firestore": {
+    "/estudantes/{userId}": {
+      "schema": "Student",
+      "description": "Student profiles and academic records"
+    },
+    "/user_library/{userId}": {
+      "schema": "UserLibrary",
+      "description": "Student saved shelves and reading progress"
+    },
+    "/livros/{bookId}": {
+      "schema": "Book",
+      "description": "Library materials and documents catalog"
+    },
+    "/matriculas/{matId}": {
+      "schema": "Matricula",
+      "description": "Enrollment index for student credential authentication"
+    },
+    "/cadeiras/{cadeiraId}": {
+      "schema": "Cadeira",
+      "description": "Academic disciplines and curricular chairs"
+    },
+    "/cadeira_covers/{coverId}": {
+      "schema": "CadeiraCover",
+      "description": "Cover images for curriculum chairs"
+    },
+    "/config/{configId}": {
+      "schema": "AppConfig",
+      "description": "Application configurations including curriculum and design settings"
+    },
+    "/salas_estudo/{salaId}": {
+      "schema": "StudyRoom",
+      "description": "Real-time collaborative study rooms with code access"
+    }
+  }
+}
